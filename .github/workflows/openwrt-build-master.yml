@@ -35,8 +35,8 @@ jobs:
         LAST_COMMIT_TIMESTAMP=$(date -d "${{ steps.check_commit_date.outputs.last_commit_date }}" +"%s")
         CURRENT_TIMESTAMP=$(date +"%s")
         ELAPSED_TIME=$(($CURRENT_TIMESTAMP - $LAST_COMMIT_TIMESTAMP))
-        if [ $ELAPSED_TIME -gt 86400 ]; then
-          echo "No update in the last 24 hours. Skipping the workflow."
+        if [ $ELAPSED_TIME -gt 604800 ]; then
+          echo "No update in the last 7 days. Skipping the workflow."
           exit 0
         fi
 
