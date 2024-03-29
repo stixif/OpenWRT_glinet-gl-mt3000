@@ -1,0 +1,53 @@
+name: Delete Old Items
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+  schedule:
+    # Führe den Workflow einmal wöchentlich aus
+    - cron: '0 0 * * 0'
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Delete Old Releases
+        uses: dev-drprasad/delete-older-releases@v0.3.3
+        with:
+          #repo: <owner>/<repoName> # defaults to current repo
+          keep_latest: 3
+          keep_min_download_counts: 1 # Optional parameters
+          delete_expired_data: 10 # Optional parameters
+          delete_tag_pattern: beta # defaults to ""
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 15
+          keep_minimum_runs: 5
+          
+      - name: Delete (Del) workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          delete_run_by_conclusion_pattern: cancelled, failure, skipped
+          repository: ${{ github.repository }}
+          retain_days: 1
+          keep_minimum_runs: 1
+
+      - name: Delete unused Tags
+        uses: fabriziocacicia/delete-tags-without-release-action@v0.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+      # passe den status an
+      - name: Set Workflow Status to Error
+        #if: steps.delete_workflows.outcome == 'success'
+        run: exit 1
