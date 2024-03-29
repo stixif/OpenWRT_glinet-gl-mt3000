@@ -133,7 +133,7 @@ jobs:
       id: BuildRelTag
       run: | 
         #echo "RelTag=$OpenWRTDevice-(${{ env.BUILDINFO }})-(${{ env.NOW }})" >> $GITHUB_ENV
-        echo "RelTag=${{ env.NOW }}_${{ env.OpenWRTDevice }}_@(${{ env.BUILDINFO }})" >> $GITHUB_ENV
+        echo "RelTag=${{ env.NOW }}_${{ env.OpenWRTDevice }}_@(${{ env.BUILDINFO }})_Pre" >> $GITHUB_ENV
 
     - name: Upload firmware to github
       uses: actions/upload-artifact@main
@@ -145,9 +145,9 @@ jobs:
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        prerelease: True
+        prerelease: true
         title: "${{ env.RelTag }}"
-        automatic_release_tag: "${{ env.RelTag }}"
+        automatic_release_tag: "${{ env.BUILDINFO }}_Pre"
         files: |
           ${{ env.FIRMWARE }}/*squashfs*.bin
           ${{ env.FIRMWARE }}/*.buildinfo
