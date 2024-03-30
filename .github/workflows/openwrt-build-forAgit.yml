@@ -74,7 +74,6 @@ jobs:
     - name: Update & install feeds
       run: |
         cd openwrt
-        git log --oneline | grep $OpenWRTGit
         git checkout $OpenWRTGit  # Wechseln Sie zum gewünschten Commit
         ./scripts/feeds update -a
         ./scripts/feeds install -a
