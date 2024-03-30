@@ -74,7 +74,10 @@ jobs:
     - name: Update & install feeds
       run: |
         cd openwrt
-        git checkout $OpenWRTGit
+        git fetch origin  # Aktualisieren Sie die Repository-Informationen
+        git checkout master  # Wechseln Sie zum Hauptzweig
+        git pull  # Aktualisieren Sie den Hauptzweig
+        git checkout $OpenWRTGit  # Wechseln Sie zum gewünschten Commit
         ./scripts/feeds update -a
         ./scripts/feeds install -a
     
