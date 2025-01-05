@@ -16,8 +16,9 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    # runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+    
     steps:
     - name: Checkout Repository
       uses: actions/checkout@main
